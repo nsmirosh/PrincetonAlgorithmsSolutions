@@ -1,3 +1,5 @@
+package week1;
+
 public class Percolation {
 
     // creates n-by-n grid, with all sites initially blocked
@@ -33,5 +35,11 @@ public class Percolation {
     // test client (optional)
     public static void main(String[] args) {
 
+        int n = Integer.parseInt(args[0]); // n by n grid
+        int T = Integer.parseInt(args[1]); // amount of times to run the experiment
+
+        if (n <= 0 || T <= 0) {
+            throw new IllegalArgumentException();
+        }
     }
 }
