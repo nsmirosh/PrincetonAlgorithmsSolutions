@@ -21,36 +21,81 @@ public class Percolation {
                 grid[row][col] = -1;
             }
         }
-        System.out.println("grid = " + Arrays.deepToString(grid));
+        printGrid();
         quickFind = new QuickFindUF(n * n);
     }
 
-    // opens the site (row, col) if it is not open already
     public void open(int row, int col) {
-/*
+
         if (row < 1 || col < 1) {
             throw new IllegalArgumentException();
         }
+        boolean upOpen = false;
+        if (row > 1) {
+            upOpen = isOpen(row - 1, col);
+        }
 
-        boolean upOpen = isOpen(row - 1, col);
-        boolean bottomOpen = isOpen(row + 1, col);
+        boolean bottomOpen = false;
+        if (row < n) {
+            bottomOpen = isOpen(row + 1, col);
+        }
 
-
+        boolean leftOpen = false;
+        if (col > 1) {
+            leftOpen = isOpen(row, col - 1);
+        }
 
         boolean rightOpen = false;
-        if (col + 1 <= n) {
+        if (col < n) {
             rightOpen = isOpen(row, col + 1);
         }
-        if (col )
-        boolean leftOpen = isOpen(row, col - 1);*/
 
 
+        int p = getUnderlyingPos(row, col);
+
+        if (upOpen) {
+            int q = getUnderlyingPos(row - 1, col);
+            quickFind.union(p, q);
+        }
+
+        if (bottomOpen) {
+            int q = getUnderlyingPos(row + 1, col);
+            quickFind.union(p, q);
+        }
+
+        if (leftOpen) {
+            int q = getUnderlyingPos(row , col - 1);
+            quickFind.union(p, q);
+        }
+
+        if (rightOpen) {
+            int q = getUnderlyingPos(row , col + 1);
+            quickFind.union(p, q);
+        }
+
+
+        //TODO if multiple adjacent site are open - check if they're in the same component first
+        //TODO if not - unite them altogether
+
+
+
+        grid[row - 1][col - 1] = --row * n + col;
 
 
         // TODO if the site is being opened between already open sites - make sure to connect them altogether
 
 
         quickFind.union(row, col);
+    }
+
+
+    private int getUnderlyingPos(int row, int col) {
+        return (row - 1) * n + (col -1);
+    }
+
+
+    private int getUnderlyingValueInPos(int row, int col) {
+        return quickFind.find((row - 1) * n + (col -1));
     }
 
     // is the site (row, col) open?
@@ -60,17 +105,20 @@ public class Percolation {
             throw new IllegalArgumentException();
         }
 
-
-
-        return/* id[row + col] != -1;*/ false;
+        return grid[--row][--col] != -1;
     }
 
     // is the site (row, col) full?
     public boolean isFull(int row, int col) {
 
+        if (row < 1 || col < 1) {
+            throw new IllegalArgumentException();
+        }
+
+        int item = grid[--row][--col];
 
         for (int i = 0; i < n; i++) {
-
+            grid[row]
         }
 
 
@@ -79,9 +127,7 @@ public class Percolation {
 
         check if id[row + col] ==
          */
-        if (row < 1 || col < 1) {
-            throw new IllegalArgumentException();
-        }
+
         return false;
     }
 
@@ -95,11 +141,24 @@ public class Percolation {
         return false;
     }
 
+    public void printGrid() {
+        System.out.println("grid = " + Arrays.deepToString(grid));
+    }
+
     // test client (optional)
     public static void main(String[] args) {
-
-
         Percolation percolation = new Percolation(3);
 
+        percolation.open(2, 3);
+        percolation.open(3, 2);
+        percolation.printGrid();
+
+        testIsOpen(percolation);
+    }
+
+    private static void testIsOpen(Percolation percolation) {
+        System.out.println("percolation.isOpen(3, 2) = " + percolation.isOpen(3, 2));
+        System.out.println("percolation.isOpen(2, 3) = " + percolation.isOpen(2, 3));
+        System.out.println("percolation.isOpen(3, 3) = " + percolation.isOpen(3, 3));
     }
 }
