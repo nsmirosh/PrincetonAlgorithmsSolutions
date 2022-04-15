@@ -8,17 +8,17 @@ public class Percolation {
 
     QuickFindUF quickFind = null;
 
-    private int[][] grid;
+    private boolean[][] grid;
 
     int n = 0;
 
     // creates n-by-n grid, with all sites initially blocked
     public Percolation(int n) {
         this.n = n;
-        grid = new int[n][n];
+        grid = new boolean[n][n];
         for (int row = 0; row < n; row++) {
             for (int col = 0; col < n; col++) {
-                grid[row][col] = -1;
+                grid[row][col] = false;
             }
         }
         printGrid();
@@ -54,48 +54,51 @@ public class Percolation {
         int p = getUnderlyingPos(row, col);
 
         if (upOpen) {
+            System.out.println("open() upOpen");
             int q = getUnderlyingPos(row - 1, col);
+            System.out.println("q = " + q);
+            System.out.println("p = " + p);
+
+
             quickFind.union(p, q);
         }
 
         if (bottomOpen) {
+            System.out.println("open() bottomOpen");
+
             int q = getUnderlyingPos(row + 1, col);
             quickFind.union(p, q);
         }
 
         if (leftOpen) {
-            int q = getUnderlyingPos(row , col - 1);
+            System.out.println("open() leftOpen");
+
+            int q = getUnderlyingPos(row, col - 1);
             quickFind.union(p, q);
         }
 
         if (rightOpen) {
-            int q = getUnderlyingPos(row , col + 1);
+            System.out.println("open() rightOpen");
+
+            int q = getUnderlyingPos(row, col + 1);
             quickFind.union(p, q);
+
         }
 
+       /* if (!upOpen && !bottomOpen && !leftOpen && !rightOpen) {
+        }*/
+        grid[row - 1][col - 1] = true;
 
-        //TODO if multiple adjacent site are open - check if they're in the same component first
-        //TODO if not - unite them altogether
-
-
-
-        grid[row - 1][col - 1] = --row * n + col;
-
-
-        // TODO if the site is being opened between already open sites - make sure to connect them altogether
-
-
-        quickFind.union(row, col);
     }
 
 
     private int getUnderlyingPos(int row, int col) {
-        return (row - 1) * n + (col -1);
+        return (row - 1) * n + (col - 1);
     }
 
 
     private int getUnderlyingValueInPos(int row, int col) {
-        return quickFind.find((row - 1) * n + (col -1));
+        return quickFind.find((row - 1) * n + (col - 1));
     }
 
     // is the site (row, col) open?
@@ -105,7 +108,7 @@ public class Percolation {
             throw new IllegalArgumentException();
         }
 
-        return grid[--row][--col] != -1;
+        return grid[--row][--col];
     }
 
     // is the site (row, col) full?
@@ -115,11 +118,16 @@ public class Percolation {
             throw new IllegalArgumentException();
         }
 
+        /*
+        is it open AND
+        is the value of the site equal to any of the first N elements
+         */
+/*
         int item = grid[--row][--col];
 
         for (int i = 0; i < n; i++) {
             grid[row]
-        }
+        }*/
 
 
 
@@ -138,27 +146,78 @@ public class Percolation {
 
     // does the system percolate?
     public boolean percolates() {
-        return false;
+
+        /*
+
+        a system percolates if any of the last N entries values are
+        equal to any of the first N entries
+         */
+
+        boolean percolates = false;
+
+        for (int i = 0; i < n; i++) {
+            int first_row_entry = quickFind.find(i);
+            for (int j = n * (n - 1); j < n * n; j++) {
+                int last_row_entry = quickFind.find(j);
+                if (first_row_entry == last_row_entry) {
+                    percolates = true;
+                    break;
+                }
+            }
+        }
+        return percolates;
     }
 
     public void printGrid() {
-        System.out.println("grid = " + Arrays.deepToString(grid));
+
+        System.out.println("Current grid status : ");
+
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[i].length; j++) {
+                if (grid[i][j]) {
+                    System.out.print(" ");
+                } else {
+                    System.out.print("X");
+                }
+            }
+            System.out.println();
+        }
+
+        System.out.println();
+    }
+
+    public int count() {
+
+        return quickFind.count();
     }
 
     // test client (optional)
     public static void main(String[] args) {
         Percolation percolation = new Percolation(3);
+        percolation.open(1, 2);
+        System.out.println("count = " + percolation.count());
+        System.out.println("percolation.percolates() = " + percolation.percolates());
 
-        percolation.open(2, 3);
+        percolation.open(2, 2);
+        System.out.println("count = " + percolation.count());
+        System.out.println("percolation.percolates() = " + percolation.percolates());
+
         percolation.open(3, 2);
+        System.out.println("count = " + percolation.count());
+
         percolation.printGrid();
 
         testIsOpen(percolation);
+
+        System.out.println("percolation.percolates() = " + percolation.percolates());
+
+        System.out.println("count = " + percolation.count());
+
     }
 
     private static void testIsOpen(Percolation percolation) {
-        System.out.println("percolation.isOpen(3, 2) = " + percolation.isOpen(3, 2));
-        System.out.println("percolation.isOpen(2, 3) = " + percolation.isOpen(2, 3));
-        System.out.println("percolation.isOpen(3, 3) = " + percolation.isOpen(3, 3));
+        System.out.println("percolation.isOpen(3, 2) = " + percolation.isOpen(1, 2));
+        System.out.println("percolation.isOpen(2, 3) = " + percolation.isOpen(2, 2));
+        System.out.println("percolation.isOpen(3, 3) = " + percolation.isOpen(3, 2));
     }
 }
