@@ -6,11 +6,11 @@ import java.util.Arrays;
 
 public class Percolation {
 
-    QuickFindUF quickFind = null;
+    QuickFindUF quickFind;
 
-    private boolean[][] grid;
+    private final boolean[][] grid;
 
-    int n = 0;
+    int n;
 
     // creates n-by-n grid, with all sites initially blocked
     public Percolation(int n) {
@@ -85,17 +85,12 @@ public class Percolation {
 
         }
 
-       /* if (!upOpen && !bottomOpen && !leftOpen && !rightOpen) {
-        }*/
         grid[row - 1][col - 1] = true;
-
     }
-
 
     private int getUnderlyingPos(int row, int col) {
         return (row - 1) * n + (col - 1);
     }
-
 
     private int getUnderlyingValueInPos(int row, int col) {
         return quickFind.find((row - 1) * n + (col - 1));
@@ -118,30 +113,35 @@ public class Percolation {
             throw new IllegalArgumentException();
         }
 
+        boolean isFull = false;
+        if (isOpen(row, col)) {
+            int value = getUnderlyingValueInPos(row, col);
+            for (int i = 0; i < n; i++) {
+                if (quickFind.find(i) == value) {
+                    isFull = true;
+                    break;
+                }
+            }
+        }
         /*
         is it open AND
         is the value of the site equal to any of the first N elements
          */
-/*
-        int item = grid[--row][--col];
 
-        for (int i = 0; i < n; i++) {
-            grid[row]
-        }*/
-
-
-
-        /*
-
-        check if id[row + col] ==
-         */
-
-        return false;
+        return isFull;
     }
 
     // returns the number of open sites
     public int numberOfOpenSites() {
-        return 0;
+        int openSites = 0;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                if (grid[i][j]) {
+                    openSites++;
+                }
+            }
+        }
+        return openSites;
     }
 
     // does the system percolate?
@@ -194,24 +194,26 @@ public class Percolation {
     // test client (optional)
     public static void main(String[] args) {
         Percolation percolation = new Percolation(3);
+
+        percolation.printGrid();
+
         percolation.open(1, 2);
-        System.out.println("count = " + percolation.count());
-        System.out.println("percolation.percolates() = " + percolation.percolates());
+        percolation.printGrid();
 
         percolation.open(2, 2);
-        System.out.println("count = " + percolation.count());
-        System.out.println("percolation.percolates() = " + percolation.percolates());
+        percolation.printGrid();
+
+        System.out.println("isFull 2, 2 = " + percolation.isFull(2, 2));
 
         percolation.open(3, 2);
-        System.out.println("count = " + percolation.count());
+
+        System.out.println("number of open sites = " + percolation.numberOfOpenSites());
 
         percolation.printGrid();
 
         testIsOpen(percolation);
 
         System.out.println("percolation.percolates() = " + percolation.percolates());
-
-        System.out.println("count = " + percolation.count());
 
     }
 
