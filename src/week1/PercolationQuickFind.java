@@ -1,18 +1,17 @@
 package week1;
 
-import edu.princeton.cs.algs4.WeightedQuickUnionUF;
+import edu.princeton.cs.algs4.QuickFindUF;
 
+public class PercolationQuickFind {
 
-public class PercolationWeighted {
-
-    WeightedQuickUnionUF weightedQuickFind;
+    QuickFindUF quickFind;
 
     private final boolean[][] grid;
 
     int n;
 
     // creates n-by-n grid, with all sites initially blocked
-    public PercolationWeighted(int n) {
+    public PercolationQuickFind(int n) {
         this.n = n;
         grid = new boolean[n][n];
         for (int row = 0; row < n; row++) {
@@ -21,7 +20,7 @@ public class PercolationWeighted {
             }
         }
         printGrid();
-        weightedQuickFind = new WeightedQuickUnionUF(n * n);
+        quickFind = new QuickFindUF(n * n);
     }
 
     public void open(int row, int col) {
@@ -59,28 +58,28 @@ public class PercolationWeighted {
             System.out.println("p = " + p);
 
 
-            weightedQuickFind.union(p, q);
+            quickFind.union(p, q);
         }
 
         if (bottomOpen) {
             System.out.println("open() bottomOpen");
 
             int q = getUnderlyingPos(row + 1, col);
-            weightedQuickFind.union(p, q);
+            quickFind.union(p, q);
         }
 
         if (leftOpen) {
             System.out.println("open() leftOpen");
 
             int q = getUnderlyingPos(row, col - 1);
-            weightedQuickFind.union(p, q);
+            quickFind.union(p, q);
         }
 
         if (rightOpen) {
             System.out.println("open() rightOpen");
 
             int q = getUnderlyingPos(row, col + 1);
-            weightedQuickFind.union(p, q);
+            quickFind.union(p, q);
 
         }
 
@@ -92,7 +91,7 @@ public class PercolationWeighted {
     }
 
     private int getUnderlyingValueInPos(int row, int col) {
-        return weightedQuickFind.find((row - 1) * n + (col - 1));
+        return quickFind.find((row - 1) * n + (col - 1));
     }
 
     // is the site (row, col) open?
@@ -116,7 +115,7 @@ public class PercolationWeighted {
         if (isOpen(row, col)) {
             int value = getUnderlyingValueInPos(row, col);
             for (int i = 0; i < n; i++) {
-                if (weightedQuickFind.find(i) == value) {
+                if (quickFind.find(i) == value) {
                     isFull = true;
                     break;
                 }
@@ -155,9 +154,9 @@ public class PercolationWeighted {
         boolean percolates = false;
 
         for (int i = 0; i < n; i++) {
-            int first_row_entry = weightedQuickFind.find(i);
+            int first_row_entry = quickFind.find(i);
             for (int j = n * (n - 1); j < n * n; j++) {
-                int last_row_entry = weightedQuickFind.find(j);
+                int last_row_entry = quickFind.find(j);
                 if (first_row_entry == last_row_entry) {
                     percolates = true;
                     break;
@@ -187,12 +186,12 @@ public class PercolationWeighted {
 
     public int count() {
 
-        return weightedQuickFind.count();
+        return quickFind.count();
     }
 
     // test client (optional)
     public static void main(String[] args) {
-        Percolation percolation = new Percolation(3);
+        PercolationQuickFind percolation = new PercolationQuickFind(3);
 
         percolation.printGrid();
 
@@ -216,7 +215,7 @@ public class PercolationWeighted {
 
     }
 
-    private static void testIsOpen(Percolation percolation) {
+    private static void testIsOpen(PercolationQuickFind percolation) {
         System.out.println("percolation.isOpen(3, 2) = " + percolation.isOpen(1, 2));
         System.out.println("percolation.isOpen(2, 3) = " + percolation.isOpen(2, 2));
         System.out.println("percolation.isOpen(3, 3) = " + percolation.isOpen(3, 2));
