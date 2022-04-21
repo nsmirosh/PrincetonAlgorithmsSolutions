@@ -1,4 +1,4 @@
-package week1;
+//package week1;
 
 import edu.princeton.cs.algs4.StdRandom;
 import edu.princeton.cs.algs4.StdStats;
@@ -7,9 +7,9 @@ import edu.princeton.cs.algs4.StdStats;
 
 public class PercolationStats {
 
-    int n;
+    private final int n;
 
-    Percolation[] percolated;
+    private final Percolation[] percolated;
 
     // perform independent trials on an n-by-n grid
     public PercolationStats(int n, int trials) {

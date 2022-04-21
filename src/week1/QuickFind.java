@@ -3,7 +3,7 @@ package week1;
 public class QuickFind {
 
 
-    private int[] id;
+    private final int[] id;
 
     public QuickFind(int n) {
         id = new int[n];

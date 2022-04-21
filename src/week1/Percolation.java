@@ -1,18 +1,20 @@
-package week1;
-
+//package week1;
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
 
 public class Percolation {
 
-    WeightedQuickUnionUF weightedQuickUnion;
+    private final WeightedQuickUnionUF weightedQuickUnion;
 
     private final boolean[][] grid;
 
-    int n;
+    private final int n;
 
     // creates n-by-n grid, with all sites initially blocked
     public Percolation(int n) {
+        if (n <= 0) {
+            throw new IllegalArgumentException();
+        }
         this.n = n;
         grid = new boolean[n][n];
         for (int row = 0; row < n; row++) {
@@ -57,25 +59,18 @@ public class Percolation {
         }
 
         if (bottomOpen) {
-//            System.out.println("open() bottomOpen");
-
             int q = getUnderlyingPos(row + 1, col);
             weightedQuickUnion.union(p, q);
         }
 
         if (leftOpen) {
-//            System.out.println("open() leftOpen");
-
             int q = getUnderlyingPos(row, col - 1);
             weightedQuickUnion.union(p, q);
         }
 
         if (rightOpen) {
-//            System.out.println("open() rightOpen");
-
             int q = getUnderlyingPos(row, col + 1);
             weightedQuickUnion.union(p, q);
-
         }
 
         grid[row - 1][col - 1] = true;
@@ -148,20 +143,25 @@ public class Percolation {
 
         boolean percolates = false;
 
-        for (int i = 0; i < n; i++) {
-            int first_row_entry = weightedQuickUnion.find(i);
-            for (int j = n * (n - 1); j < n * n; j++) {
-                int last_row_entry = weightedQuickUnion.find(j);
-                if (first_row_entry == last_row_entry) {
-                    percolates = true;
-                    break;
+        if (n > 1) {
+            for (int i = 0; i < n; i++) {
+                int first_row_entry = weightedQuickUnion.find(i);
+                for (int j = n * (n - 1); j < n * n; j++) {
+                    int last_row_entry = weightedQuickUnion.find(j);
+                    if (first_row_entry == last_row_entry) {
+                        percolates = true;
+                        break;
+                    }
                 }
             }
+        }
+        else {
+            percolates = grid[0][0];
         }
         return percolates;
     }
 
-    public void printGrid() {
+    /*private void printGrid() {
 
         System.out.println("Current grid status : ");
 
@@ -177,16 +177,14 @@ public class Percolation {
         }
 
         System.out.println();
-    }
-
-    public int count() {
-
-        return weightedQuickUnion.count();
-    }
+    }*/
 
     // test client (optional)
     public static void main(String[] args) {
-      /*  Percolation percolationQuickFind = new Percolation(3);
+
+       /*  Percolation percolationQuickFind = new Percolation(1);
+        System.out.println("percolation.percolates() = " + percolationQuickFind.percolates());
+       Percolation percolationQuickFind = new Percolation(3);
 
         percolationQuickFind.printGrid();
 
