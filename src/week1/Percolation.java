@@ -1,5 +1,14 @@
-//package week1;
+package week1;
+
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
+import javafx.util.Pair;
+
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class Percolation {
@@ -154,8 +163,7 @@ public class Percolation {
                     }
                 }
             }
-        }
-        else {
+        } else {
             percolates = grid[0][0];
         }
         return percolates;
@@ -181,6 +189,13 @@ public class Percolation {
 
     // test client (optional)
     public static void main(String[] args) {
+
+
+        try {
+            readFile("");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
        /*  Percolation percolationQuickFind = new Percolation(1);
         System.out.println("percolation.percolates() = " + percolationQuickFind.percolates());
@@ -213,4 +228,42 @@ public class Percolation {
         System.out.println("percolation.isOpen(2, 3) = " + percolationQuickFind.isOpen(2, 2));
         System.out.println("percolation.isOpen(3, 3) = " + percolationQuickFind.isOpen(3, 2));
     }*/
+
+
+    private String readFromInputStream(InputStream inputStream)
+            throws IOException {
+        StringBuilder resultStringBuilder = new StringBuilder();
+        try (BufferedReader br
+                     = new BufferedReader(new InputStreamReader(inputStream))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                resultStringBuilder.append(line).append("\n");
+            }
+        }
+        return resultStringBuilder.toString();
+    }
+
+    private static List<Pair<Integer, Integer>> readFile(String path) throws IOException {
+//        String file ="src/test/resources/fileTest.txt";
+
+        String first = "./src/week1/snake13.txt";
+        List<String> lines = Files.readAllLines(Paths.get(first));
+        lines.remove(0);
+
+        List<Pair<Integer, Integer>> pairs = new ArrayList<>();
+
+        for (String line: lines) {
+            String newLine = line.substring(1);
+
+            int firstSpace = newLine.indexOf(" ");
+            String firstNumber = newLine.substring(0, firstSpace);
+            String secondNumber = newLine.substring(firstSpace).trim();
+            int i = Integer.parseInt(firstNumber);
+            int i1 = Integer.parseInt(secondNumber);
+            Pair<Integer, Integer> pair = new Pair<>(i, i1);
+            pairs.add(pair);
+        }
+
+        return pairs;
+    }
 }
