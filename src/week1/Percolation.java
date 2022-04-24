@@ -1,4 +1,7 @@
+package week1;
+
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
+
 
 public class Percolation {
 
@@ -7,6 +10,7 @@ public class Percolation {
     private final boolean[][] grid;
 
     private final int n;
+
 
 /*    private int openCalls = 0;
     private int percolatedCalls = 0;
@@ -25,7 +29,8 @@ public class Percolation {
                 grid[row][col] = false;
             }
         }
-        weightedQuickUnion = new WeightedQuickUnionUF(n * n);
+        //add two more spaces for top and bottom
+        weightedQuickUnion = new WeightedQuickUnionUF(n * n + 2);
     }
 
     public void open(int row, int col) {
@@ -148,6 +153,8 @@ public class Percolation {
         return openSites;
     }
 
+    //TODO implement virtual top and bottom and check if they're connected
+
     // does the system percolate?
     public boolean percolates() {
 
@@ -160,18 +167,6 @@ public class Percolation {
         boolean percolates = false;
 
         if (n > 1) {
-/*            for (int i = 0; i < n; i++) {
-                percolatedCalls++;
-                int first_row_entry = weightedQuickUnion.find(i);
-                for (int j = n * (n - 1); j < n * n; j++) {
-                    percolatedCalls++;
-                    int last_row_entry = weightedQuickUnion.find(j);
-                    if (first_row_entry == last_row_entry) {
-                        percolates = true;
-                        break;
-                    }
-                }
-            }*/
 
             for (int i = 1; i < n + 1; i++) {
                 if (isFull(n, i)) {

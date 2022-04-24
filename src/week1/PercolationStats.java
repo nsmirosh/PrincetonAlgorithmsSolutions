@@ -1,3 +1,4 @@
+package week1;
 
 import edu.princeton.cs.algs4.StdRandom;
 import edu.princeton.cs.algs4.StdStats;
@@ -68,17 +69,21 @@ public class PercolationStats {
 
     // low  endpoint of 95% confidence interval
     public double confidenceLo() {
-        return (mean() - 1.96 * Math.sqrt(stddev() / n));
+        return (mean() - 1.96 * stddev() / Math.sqrt(n));
     }
 
     // high endpoint of 95% confidence interval
-    public double confidenceHi() {return (mean() + 1.96 * Math.sqrt(stddev() / n));}
+    public double confidenceHi() {
+        return (mean() + 1.96 * stddev() / Math.sqrt(n));
+    }
 
     // test client (see below)
     public static void main(String[] args) {
-        int n = Integer.parseInt(args[0]); // n by n grid
-        int T = Integer.parseInt(args[1]); // amount of times to run the experiment
+//        int n = Integer.parseInt(args[0]); // n by n grid
+//        int T = Integer.parseInt(args[1]); // amount of times to run the experiment
 
+        int n = 20;
+        int T = 10;
         if (n <= 0 || T <= 0) {
             throw new IllegalArgumentException();
         }
