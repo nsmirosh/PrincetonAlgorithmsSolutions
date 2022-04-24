@@ -1,5 +1,3 @@
-package week1;
-
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
 public class Percolation {
@@ -32,7 +30,7 @@ public class Percolation {
 
     public void open(int row, int col) {
 
-        if (row < 1 || col < 1) {
+        if (row < 1 || col < 1 || row > n || col > n) {
             throw new IllegalArgumentException();
         }
 
@@ -104,7 +102,7 @@ public class Percolation {
     // is the site (row, col) open?
     public boolean isOpen(int row, int col) {
 
-        if (row < 1 || col < 1) {
+        if (row < 1 || col < 1 || row > n || col > n) {
             throw new IllegalArgumentException();
         }
 
@@ -114,7 +112,7 @@ public class Percolation {
     // is the site (row, col) full?
     public boolean isFull(int row, int col) {
 
-        if (row < 1 || col < 1) {
+        if (row < 1 || col < 1 || row > n || col > n) {
             throw new IllegalArgumentException();
         }
 
