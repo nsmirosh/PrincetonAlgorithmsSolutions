@@ -1,4 +1,4 @@
-package week1;
+//package week1;
 
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
@@ -10,6 +10,9 @@ public class Percolation {
     private final boolean[][] grid;
 
     private final int n;
+
+    private int virtualTopId = 0;
+    private int virtualBottomId = 0;
 
 
 /*    private int openCalls = 0;
@@ -29,8 +32,19 @@ public class Percolation {
                 grid[row][col] = false;
             }
         }
-        //add two more spaces for top and bottom
         weightedQuickUnion = new WeightedQuickUnionUF(n * n + 2);
+        initVirtualTopBottom();
+    }
+
+    private void initVirtualTopBottom() {
+        virtualTopId = n * n;
+        virtualBottomId = virtualTopId + 1;
+        for (int i = 0; i < n; i++) {
+            weightedQuickUnion.union(i, virtualTopId);
+        }
+        for (int i = n * n - n; i < n * n; i++) {
+            weightedQuickUnion.union(i, virtualBottomId);
+        }
     }
 
     public void open(int row, int col) {
@@ -168,12 +182,16 @@ public class Percolation {
 
         if (n > 1) {
 
-            for (int i = 1; i < n + 1; i++) {
+           /* for (int i = 1; i < n + 1; i++) {
                 if (isFull(n, i)) {
                     percolates = true;
                     break;
                 }
-            }
+            }*/
+
+            percolates = weightedQuickUnion.find(virtualBottomId) == weightedQuickUnion.find(virtualTopId);
+
+
         } else {
             percolates = grid[0][0];
         }
@@ -202,29 +220,19 @@ public class Percolation {
     public static void main(String[] args) {
 
 
-//        tests1through7();
+      /* Percolation percolationQuickFind = new Percolation(4);
 
-       /*  Percolation percolationQuickFind = new Percolation(1);
-        System.out.println("percolation.percolates() = " + percolationQuickFind.percolates());
-       Percolation percolationQuickFind = new Percolation(3);
-
-        percolationQuickFind.printGrid();
-
-        percolationQuickFind.open(1, 2);
-        percolationQuickFind.printGrid();
-
+        percolationQuickFind.open(1, 1);
+        percolationQuickFind.open(2, 1);
         percolationQuickFind.open(2, 2);
-        percolationQuickFind.printGrid();
+        percolationQuickFind.open(2, 3);
+        percolationQuickFind.open(3, 3);
+        percolationQuickFind.open(3, 4);
+        System.out.println("percolation.percolates() = " + percolationQuickFind.percolates());
 
-        System.out.println("isFull 2, 2 = " + percolationQuickFind.isFull(2, 2));
-
-        percolationQuickFind.open(3, 2);
+        percolationQuickFind.open(4, 4);
 
         System.out.println("number of open sites = " + percolationQuickFind.numberOfOpenSites());
-
-        percolationQuickFind.printGrid();
-
-        testIsOpen(percolationQuickFind);
 
         System.out.println("percolation.percolates() = " + percolationQuickFind.percolates());*/
 
