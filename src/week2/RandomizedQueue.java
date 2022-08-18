@@ -39,9 +39,9 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         if (item == null) throw new IllegalArgumentException();
         //grow the array when needed
         array[last++] = item;
-        for (Item value : array) {
+/*        for (Item value : array) {
             System.out.println("array[i] = " + value);
-        }
+        }*/
         N++;
     }
 
@@ -64,27 +64,25 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     }
 
 
-    int currentIndex = 0;
+    int noOfItems = 0;
 
     // return an independent iterator over items in random order
     public Iterator<Item> iterator() {
 
-
-        //TODO shuffle only non-nulls and iterate only over non-nulls
         StdRandom.shuffle(array);
+
+        noOfItems = array.length;
 
         return new Iterator<Item>() {
             @Override
             public boolean hasNext() {
-                return N > 0;
+                return noOfItems > 0;
             }
 
             @Override
             public Item next() {
                 if (isEmpty()) throw new NoSuchElementException();
-
-                //TODO make sure I'm not trying to acess a null here
-                return array[N--];
+                return array[--noOfItems];
             }
 
             @Override
@@ -100,13 +98,18 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
         RandomizedQueue<Balls> queue = new RandomizedQueue<>();
 
-        queue.enqueue(new Balls("my balls"));
-        queue.enqueue(new Balls("my balls2"));
-        queue.enqueue(new Balls("my balls3"));
-//        queue.enqueue(new Balls("my balls4"));
+        queue.enqueue(new Balls("1"));
+        queue.enqueue(new Balls("2"));
+        queue.enqueue(new Balls("3"));
+//        queue.enqueue(new Balls("4"));
 
         for (Balls balls : queue) {
-            System.out.println("item 1 = " + balls.text);
+            if (balls == null) {
+                System.out.println("item == null");
+            }
+            else {
+                System.out.println("item  = " + balls.text);
+            }
         }
 
     }
