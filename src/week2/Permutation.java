@@ -1,5 +1,7 @@
+package week2;
 
 import edu.princeton.cs.algs4.StdIn;
+import edu.princeton.cs.algs4.StdOut;
 
 public class Permutation {
 
@@ -7,19 +9,15 @@ public class Permutation {
         String stringK = args[0];
         int k = Integer.parseInt(stringK);
 
-        String value = StdIn.readLine();
-
-        String[] array = value.split(" ");
-
         RandomizedQueue<String> queue = new RandomizedQueue<>();
 
-        for (int i = 0;
-             i < array.length; i++) {
-            queue.enqueue(array[i]);
+        while (!StdIn.isEmpty()) {
+            String item = StdIn.readString();
+            queue.enqueue(item);
         }
 
         for (int i = 0; i < k; i++) {
-            System.out.println(queue.dequeue());
+             StdOut.println(queue.dequeue());
         }
     }
 }

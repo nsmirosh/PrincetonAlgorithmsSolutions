@@ -15,7 +15,9 @@ public class Deque<Item> implements Iterable<Item> {
     }
 
     // construct an empty deque
-    public Deque() {}
+    public Deque() {
+
+    }
 
     // is the deque empty?
     public boolean isEmpty() {
@@ -46,7 +48,10 @@ public class Deque<Item> implements Iterable<Item> {
         last = new Node();
         last.item = item;
         if (isEmpty()) first = last;
-        else oldLast.next = last;
+        else  {
+            oldLast.next = last;
+            last.prev = oldLast;
+        }
     }
 
     // remove and return the item from the front

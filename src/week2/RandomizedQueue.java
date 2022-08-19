@@ -1,3 +1,4 @@
+package week2;
 
 import edu.princeton.cs.algs4.StdRandom;
 
@@ -99,7 +100,6 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
             @Override
             public void remove() {
-                Iterator.super.remove();
                 throw new UnsupportedOperationException();
             }
         };

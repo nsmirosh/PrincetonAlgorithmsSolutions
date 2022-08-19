@@ -66,7 +66,10 @@ public class DequeWithLogs<Item> implements Iterable<Item> {
         last = new Node();
         last.item = item;
         if (isEmpty()) first = last;
-        else oldLast.next = last;
+        else  {
+            oldLast.next = last;
+            last.prev = oldLast;
+        }
     }
 
     // remove and return the item from the front
@@ -118,26 +121,57 @@ public class DequeWithLogs<Item> implements Iterable<Item> {
     public static void main(String[] args) {
 
 
-       /* Deque<String> myDeque = new Deque<>();
+//        test1();
+
+        test3();
+    }
+
+
+
+    public static void test1() {
+        DequeWithLogs<String> myDeque = new DequeWithLogs<>();
         System.out.println("myDeque.isEmpty() = " + myDeque.isEmpty());
-        myDeque.addFirst("balls");
-        myDeque.addLast("last");
-        myDeque.addFirst("first");
+        myDeque.addFirst("AF");
+        myDeque.addLast("BL");
+        myDeque.addFirst("CF");
         myDeque.removeFirst();
         myDeque.removeFirst();
-        //should print "last" after that
         System.out.println(" test 1 =================");
 
+        for (String string : myDeque) {
+            System.out.println("should print BL = " + string);
+        }
+    }
+
+    public static void test3() {
+        DequeWithLogs<String> myDeque = new DequeWithLogs<>();
+        System.out.println("myDeque.isEmpty() = " + myDeque.isEmpty());
+        myDeque.addFirst("AF");
+
+        System.out.println("should print AF = " + myDeque.removeLast());
+
+        myDeque.addFirst("AF");
+        myDeque.addLast("BL"); //AF , BL
+        myDeque.addFirst("CF"); //CF, AF , BL
+        myDeque.addFirst("DF"); //DF, CF, AF , BL
+        myDeque.addLast("EL"); //DF, CF, AF , BL, EL
+        System.out.println("should print EL = " + myDeque.removeLast());
+
+        System.out.println("should print DF = " + myDeque.removeFirst());
+
+        System.out.println("should print BL = " + myDeque.removeLast());
+
+      /*  System.out.println(" test 1 =================");
 
         for (String string : myDeque) {
-            System.out.println("item = " + string);
-        }
+            System.out.println("should print BL = " + string);
+        }*/
+    }
 
 
-
-         Deque<String> myDeque2 = new Deque<>();
-
+    public static void test2() {
         System.out.println("\n test 2  ================= \n ");
+        DequeWithLogs<String> myDeque2 = new DequeWithLogs<>();
 
         System.out.println("myDeque.isEmpty() = " + myDeque2.isEmpty());
 
@@ -149,9 +183,8 @@ public class DequeWithLogs<Item> implements Iterable<Item> {
         myDeque2.addFirst("first");
         //should print "first" after that
 
-       for (String string : myDeque2) {
+        for (String string : myDeque2) {
             System.out.println("item = " + string);
-        }*/
-
+        }
     }
 }
