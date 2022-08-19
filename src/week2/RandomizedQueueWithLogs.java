@@ -5,7 +5,7 @@ import edu.princeton.cs.algs4.StdRandom;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class RandomizedQueue<Item> implements Iterable<Item> {
+public class RandomizedQueueWithLogs<Item> implements Iterable<Item> {
 
     private int noOfItems = 0;
     private int first, last;
@@ -13,7 +13,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     private int n;
 
     // construct an empty randomized queue
-    public RandomizedQueue() {
+    public RandomizedQueueWithLogs() {
         s = (Item[]) new Object[2];
     }
 
@@ -29,10 +29,17 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
     // add the item
     public void enqueue(Item item) {
+        System.out.println("s before enqueue");
+
+        printArray();
+
         if (item == null) throw new IllegalArgumentException();
         n++;
         if (first + n == s.length) resize(s.length * 2);
         s[last++] = item;
+        System.out.println("s after enqueue");
+        printArray();
+
     }
 
     private void resize(int capacity) {
@@ -60,6 +67,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         if (isEmpty()) throw new NoSuchElementException();
 
         int randomPosInActiveRange = StdRandom.uniform(n) + first;
+        System.out.println("randomPosInActiveRange = " + randomPosInActiveRange);
 
         Item randomValue = s[randomPosInActiveRange];
         Item valueInFirst = s[first];
@@ -70,6 +78,14 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
         if (n > 0 && n == s.length / 4) resize(s.length / 2);
 
+
+        System.out.println("s after dequeue");
+
+//        System.out.println("dequeud random text = " + ((Balls) randomValue).text);
+
+        printArray();
+
+
         return randomValue;
     }
 
@@ -78,6 +94,21 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         if (isEmpty()) throw new NoSuchElementException();
 
         return s[StdRandom.uniform(n) + first];
+    }
+
+
+    private void printArray() {
+/*        for (int i = 0; i < s.length; i++) {
+            if (s[i] == null) {
+                System.out.println("s[" + i + "] = null");
+
+            } else {
+                System.out.println("s[" + i + "] = " + ((Balls) s[i]).text);
+            }
+        }
+
+        System.out.println("===========");
+        System.out.println();*/
     }
 
     // return an independent iterator over items in random order
