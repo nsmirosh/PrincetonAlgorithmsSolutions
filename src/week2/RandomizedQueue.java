@@ -10,7 +10,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     int first, last;
 
     //must support constant amortized time for each queue operation
-    Item[] array;
+    Item[] s;
 
     int N;
 
@@ -21,7 +21,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
     // construct an empty randomized queue
     public RandomizedQueue() {
-        array = (Item[]) new Object[4];
+        s = (Item[]) new Object[4];
     }
 
     // is the randomized queue empty?
@@ -38,11 +38,12 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     public void enqueue(Item item) {
         if (item == null) throw new IllegalArgumentException();
         //grow the array when needed
-        array[last++] = item;
-/*        for (Item value : array) {
-            System.out.println("array[i] = " + value);
-        }*/
+        s[last++] = item;
         N++;
+
+        System.out.println("s after enqueue");
+        printArray();
+
     }
 
     // remove and return a random item
@@ -50,17 +51,51 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
         if (isEmpty()) throw new NoSuchElementException();
 
+        int randomPosInActiveRange = StdRandom.uniform(N) + first;
+        System.out.println("randomPosInActiveRange = " + randomPosInActiveRange);
+
+        Item randomValue = s[randomPosInActiveRange];
+        Item valueInFirst = s[first];
+
+        s[randomPosInActiveRange] = valueInFirst;
+        s[first++] = null;
+        N--;
+
+        System.out.println("s after dequeue");
+
+
         /*
        https://www.coursera.org/learn/algorithms-part1/discussions/forums/jlI-WTmaEeaA1Q4yX3ldsQ/threads/OdA9evssEeaYlAo23CV3mg
          */
-        return array[0];
+
+        System.out.println("dequeud random text = " +((Balls) randomValue).text);
+
+        printArray();
+
+
+        return randomValue;
     }
 
     // return a random item (but do not remove it)
     public Item sample() {
         if (isEmpty()) throw new NoSuchElementException();
 
-        return array[0];
+        return s[0];
+    }
+
+
+    private void printArray() {
+        for (int i = 0; i < s.length; i++) {
+            if (s[i] == null) {
+                System.out.println("s[" + i + "] = null");
+
+            } else {
+                System.out.println("s[" + i + "] = " + ((Balls) s[i]).text);
+            }
+        }
+
+        System.out.println("===========");
+        System.out.println();
     }
 
 
@@ -69,9 +104,9 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     // return an independent iterator over items in random order
     public Iterator<Item> iterator() {
 
-        StdRandom.shuffle(array);
+        StdRandom.shuffle(s);
 
-        noOfItems = array.length;
+        noOfItems = s.length;
 
         return new Iterator<Item>() {
             @Override
@@ -82,7 +117,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
             @Override
             public Item next() {
                 if (isEmpty()) throw new NoSuchElementException();
-                return array[--noOfItems];
+                return s[--noOfItems];
             }
 
             @Override
@@ -98,20 +133,25 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
         RandomizedQueue<Balls> queue = new RandomizedQueue<>();
 
-        queue.enqueue(new Balls("1"));
-        queue.enqueue(new Balls("2"));
-        queue.enqueue(new Balls("3"));
+        queue.enqueue(new Balls("A"));
+        queue.enqueue(new Balls("B"));
+        queue.enqueue(new Balls("C"));
+
+
+        queue.dequeue();
+        queue.dequeue();
+        queue.dequeue();
+
+
 //        queue.enqueue(new Balls("4"));
 
-        for (Balls balls : queue) {
+       /* for (Balls balls : queue) {
             if (balls == null) {
                 System.out.println("item == null");
-            }
-            else {
+            } else {
                 System.out.println("item  = " + balls.text);
             }
-        }
-
+        }*/
     }
 
 
