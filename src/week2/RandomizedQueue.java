@@ -21,7 +21,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
     // construct an empty randomized queue
     public RandomizedQueue() {
-        s = (Item[]) new Object[4];
+        s = (Item[]) new Object[2];
     }
 
     // is the randomized queue empty?
@@ -37,13 +37,31 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     // add the item
     public void enqueue(Item item) {
         if (item == null) throw new IllegalArgumentException();
-        //grow the array when needed
-        s[last++] = item;
         N++;
-
+        if (first + N == s.length) resize(s.length * 2);
+        s[last++] = item;
         System.out.println("s after enqueue");
         printArray();
 
+    }
+
+    private void resize(int capacity) {
+        Item[] copy = (Item[]) new Object[capacity];
+
+        int i = 0;
+        int j = 0;
+        while(i < N) {
+            Item result = s[first + i];
+            if (result != null) {
+                copy[j] = result;
+                j++;
+            }
+            i++;
+        }
+
+        first = 0;
+        last = N - 1;
+        s = copy;
     }
 
     // remove and return a random item
@@ -61,6 +79,9 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         s[first++] = null;
         N--;
 
+        if (N > 0 && N == s.length / 4) resize (s.length / 2);
+
+
         System.out.println("s after dequeue");
 
 
@@ -68,7 +89,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
        https://www.coursera.org/learn/algorithms-part1/discussions/forums/jlI-WTmaEeaA1Q4yX3ldsQ/threads/OdA9evssEeaYlAo23CV3mg
          */
 
-        System.out.println("dequeud random text = " +((Balls) randomValue).text);
+        System.out.println("dequeud random text = " + ((Balls) randomValue).text);
 
         printArray();
 
@@ -130,7 +151,13 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
     // unit testing (required)
     public static void main(String[] args) {
+//        test1();
+//        increasing_the_array_works_ok();
+        decreasing_and_increasing_the_array_works_ok();
+    }
 
+
+    public static void test1() {
         RandomizedQueue<Balls> queue = new RandomizedQueue<>();
 
         queue.enqueue(new Balls("A"));
@@ -141,17 +168,36 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         queue.dequeue();
         queue.dequeue();
         queue.dequeue();
+    }
 
 
-//        queue.enqueue(new Balls("4"));
+    public static void increasing_the_array_works_ok() {
+        RandomizedQueue<Balls> queue = new RandomizedQueue<>();
 
-       /* for (Balls balls : queue) {
-            if (balls == null) {
-                System.out.println("item == null");
-            } else {
-                System.out.println("item  = " + balls.text);
-            }
-        }*/
+        queue.enqueue(new Balls("A"));
+        queue.enqueue(new Balls("B"));
+        queue.enqueue(new Balls("C"));
+        queue.enqueue(new Balls("D"));
+        queue.enqueue(new Balls("E"));
+    }
+
+
+    public static void decreasing_and_increasing_the_array_works_ok() {
+        RandomizedQueue<Balls> queue = new RandomizedQueue<>();
+
+        queue.enqueue(new Balls("A"));
+        queue.enqueue(new Balls("B"));
+        queue.enqueue(new Balls("C"));
+        queue.enqueue(new Balls("D"));
+
+        queue.dequeue();
+        queue.dequeue();
+        queue.dequeue();
+        queue.dequeue();
+
+        queue.enqueue(new Balls("A"));
+        queue.enqueue(new Balls("B"));
+
     }
 
 
