@@ -8,16 +8,8 @@ import java.util.NoSuchElementException;
 public class RandomizedQueue<Item> implements Iterable<Item> {
 
     int first, last;
-
-    //must support constant amortized time for each queue operation
     Item[] s;
-
     int N;
-
-    private class Node {
-        Item item;
-        Node next;
-    }
 
     // construct an empty randomized queue
     public RandomizedQueue() {
@@ -31,7 +23,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
     // return the number of items on the randomized queue
     public int size() {
-        return last - first;
+        return N;
     }
 
     // add the item
@@ -50,7 +42,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
         int i = 0;
         int j = 0;
-        while(i < N) {
+        while (i < N) {
             Item result = s[first + i];
             if (result != null) {
                 copy[j] = result;
@@ -79,16 +71,11 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         s[first++] = null;
         N--;
 
-        if (N > 0 && N == s.length / 4) resize (s.length / 2);
+        if (N > 0 && N == s.length / 4) resize(s.length / 2);
 
 
         System.out.println("s after dequeue");
-
-
-        /*
-       https://www.coursera.org/learn/algorithms-part1/discussions/forums/jlI-WTmaEeaA1Q4yX3ldsQ/threads/OdA9evssEeaYlAo23CV3mg
-         */
-
+        
         System.out.println("dequeud random text = " + ((Balls) randomValue).text);
 
         printArray();
@@ -101,7 +88,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     public Item sample() {
         if (isEmpty()) throw new NoSuchElementException();
 
-        return s[0];
+        return s[StdRandom.uniform(N) + first];
     }
 
 
@@ -153,7 +140,8 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     public static void main(String[] args) {
 //        test1();
 //        increasing_the_array_works_ok();
-        decreasing_and_increasing_the_array_works_ok();
+      //  decreasing_and_increasing_the_array_works_ok();
+        testSample();
     }
 
 
@@ -197,12 +185,24 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
         queue.enqueue(new Balls("A"));
         queue.enqueue(new Balls("B"));
+    }
+
+    public static void testSample() {
+        RandomizedQueue<Balls> queue = new RandomizedQueue<>();
+
+        queue.enqueue(new Balls("A"));
+        queue.enqueue(new Balls("B"));
+        System.out.println(" queue sample = " + queue.sample().text);
 
     }
 
 
-
     /*
+    
+    
+    
+
+       https://www.coursera.org/learn/algorithms-part1/discussions/forums/jlI-WTmaEeaA1Q4yX3ldsQ/threads/OdA9evssEeaYlAo23CV3mg
 
     1. Either enqueue or dequeue has to shuffle the items
         1a. in order to get constant amortized time we could keep track of the number of randomized items, dequeue them
