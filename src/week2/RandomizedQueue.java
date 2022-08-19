@@ -1,4 +1,3 @@
-package week2;
 
 import edu.princeton.cs.algs4.StdRandom;
 
@@ -84,7 +83,6 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     public Iterator<Item> iterator() {
 
         StdRandom.shuffle(s);
-
         noOfItems = s.length;
 
         return new Iterator<Item>() {
