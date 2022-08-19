@@ -141,7 +141,10 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 //        test1();
 //        increasing_the_array_works_ok();
       //  decreasing_and_increasing_the_array_works_ok();
-        testSample();
+//        testSample();
+
+
+        testIterator();
     }
 
 
@@ -194,6 +197,21 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         queue.enqueue(new Balls("B"));
         System.out.println(" queue sample = " + queue.sample().text);
 
+    }
+
+
+    public static void testIterator() {
+        RandomizedQueue<Balls> queue = new RandomizedQueue<>();
+
+        queue.enqueue(new Balls("A"));
+        queue.enqueue(new Balls("B"));
+        queue.enqueue(new Balls("C"));
+        queue.enqueue(new Balls("D"));
+
+
+        for (Balls balls: queue) {
+            System.out.println("balls = " +  balls);
+        }
     }
 
 
