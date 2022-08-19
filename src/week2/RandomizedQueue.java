@@ -28,6 +28,10 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
     // add the item
     public void enqueue(Item item) {
+        System.out.println("s before enqueue");
+
+        printArray();
+
         if (item == null) throw new IllegalArgumentException();
         N++;
         if (first + N == s.length) resize(s.length * 2);
@@ -76,7 +80,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
         System.out.println("s after dequeue");
         
-        System.out.println("dequeud random text = " + ((Balls) randomValue).text);
+//        System.out.println("dequeud random text = " + ((Balls) randomValue).text);
 
         printArray();
 
@@ -93,7 +97,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
 
     private void printArray() {
-        for (int i = 0; i < s.length; i++) {
+/*        for (int i = 0; i < s.length; i++) {
             if (s[i] == null) {
                 System.out.println("s[" + i + "] = null");
 
@@ -103,7 +107,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         }
 
         System.out.println("===========");
-        System.out.println();
+        System.out.println();*/
     }
 
 
@@ -138,13 +142,13 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
     // unit testing (required)
     public static void main(String[] args) {
-//        test1();
-//        increasing_the_array_works_ok();
-      //  decreasing_and_increasing_the_array_works_ok();
-//        testSample();
+/*        test1();
+        increasing_the_array_works_ok();
+        decreasing_and_increasing_the_array_works_ok();
+        testSample();
+        testIterator();*/
 
-
-        testIterator();
+        testSingleValue();
     }
 
 
@@ -196,6 +200,14 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         queue.enqueue(new Balls("A"));
         queue.enqueue(new Balls("B"));
         System.out.println(" queue sample = " + queue.sample().text);
+
+    }
+
+
+    public static void testSingleValue() {
+        RandomizedQueue<Balls> queue = new RandomizedQueue<>();
+
+        queue.enqueue(new Balls("A"));
 
     }
 
