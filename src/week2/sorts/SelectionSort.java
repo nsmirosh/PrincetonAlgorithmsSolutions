@@ -2,7 +2,7 @@ package week2.sorts;
 
 public class SelectionSort {
 
-
+/*
     public static <T> void sort(Comparable<T>[] a) {
 
         int N = a.length; //initialize N to the length of the array
@@ -26,5 +26,5 @@ public class SelectionSort {
         Comparable<T> temp = a[i];
         a[i] = a[j];
         a[j] = temp;
-    }
+    }*/
 }
